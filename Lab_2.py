@@ -32,32 +32,24 @@ print(f"Euclidean Distance: {euclidean_dist}")
 print(f"Manhattan Distance: {manhattan_dist}")
 
 #2nd question
-import numpy as np
-from collections import Counter
+from sklearn.neighbors import KNeighborsClassifier
 
-class KNN_Classifier:
-    def __init__(self,k):
-        self.k=k
-    def fit(self, X_train, y_train):
-        self.X_train=X_train
-        self.y_train=y_train
-    def predict(self, X_test):
-        y_pred=[self._predict(x) for x in X_test]
-        return np.array(y_pred)
-    def _predict(self,x):
-        distances=[np.linalg.norm(x-x_train) for x_train in self.X_train]
-        k_indices=np.argsort(distances[:self.k])
-        k_nearest_labels=[self.y_train[i] for i in k_indices]
-        most_common=Counter(k_nearest_labels).most_common(1)
-        return most_common[0][0]
-    
-X_train=np.array([[1,2],[2,3],[3,4],[4,5]])
-y_train=np.array([0,0,1,1])
-X_test=np.array([[2.5,3.5],[1.5,2.5]])
-knn=KNN_Classifier(k=3)
-knn.fit(X_train,y_train)
-predictions=knn.predict(X_test)
-print("predictions:",predictions)
+def knn_classifier(X_train, y_train, X_test, k):
+  knn = KNeighborsClassifier(n_neighbors=k)
+  knn.fit(X_train, y_train)
+  y_pred = knn.predict(X_test)
+  return y_pred
+
+# Example usage:
+X_train = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y_train = [0, 0, 1, 1]
+X_test = [[1, 1], [5, 5]]
+k = 3
+
+y_pred = knn_classifier(X_train, y_train, X_test, k)
+
+print(y_pred)
+
 
 #3rd question
 def label_encoding(cateogries):
